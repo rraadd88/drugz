@@ -70,10 +70,11 @@ def load_reads(filepath, index_column, genes_to_remove):
     :param genes_to_remove: A string of comma separated control gene names
     :return: reads: A dataframe containing the read counts to be used in the further analysis
     """
-
-    # Load the input file with guide ids as row ids (file is to be tab delimited)
-    reads = pd.read_csv(filepath, index_col=index_column, delimiter='\t')
-
+    if not if isinstance(filepath, pd.DataFrame):
+        # Load the input file with guide ids as row ids (file is to be tab delimited)
+        reads = pd.read_csv(filepath, index_col=index_column, delimiter='\t')
+    else:
+        reads=filepath
 
     # Remove guides targeting control genes
     if genes_to_remove is not None:
@@ -382,11 +383,13 @@ def calculate_drugz_score_unpaired(per_gene_matrix, min_observations):
     return per_gene_results
 
 def drugZ_analysis(args):
-
     """ Call all functions and run drugZ analysis
     :param args: User given arguments
     """
-
+    if isinstance(args,dict):
+        log_.info("Input arguments format: dict")
+        from collections import namedtuple
+        args = namedtuple('Struct', args.keys())(*args.values())
     log_.info("Initiating analysis")
 
     control_samples = args.control_samples.split(',')
@@ -396,8 +399,6 @@ def drugZ_analysis(args):
         remove_genes = []
     else:
         remove_genes = args.remove_genes.split(',')
-
-
 
     log_.debug("Control samples:"+ str(control_samples))
     log_.debug("Treated samples:"+ str(treatment_samples))
@@ -459,8 +460,9 @@ def drugZ_analysis(args):
             fold_change = fold_change.loc[:,~fold_change.columns.duplicated()]
 
         if args.fc_outfile:
-            with args.fc_outfile as fold_change_file:
-                fold_change.to_csv(fold_change_file, sep='\t', float_format='%4.3f')
+            fold_change.to_csv(args.fc_outfile, sep='\t', float_format='%4.3f')            
+#             with args.fc_outfile as fold_change_file:
+#                 fold_change.to_csv(fold_change_file, sep='\t', float_format='%4.3f')
 
         log_.info('Caculating gene-level Zscores')
         gene_normZ = calculate_drugz_score(fold_change=fold_change, min_observations=1, columns=fc_zscore_ids)
