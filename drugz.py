@@ -48,7 +48,6 @@ import logging as log
 log.basicConfig(level=log.INFO)
 log_ = log.getLogger(__name__)
 
-
 pd.options.mode.chained_assignment = None
 # default='warn' - printing a warning message
 # None - ignoring the warning
@@ -70,7 +69,7 @@ def load_reads(filepath, index_column, genes_to_remove):
     :param genes_to_remove: A string of comma separated control gene names
     :return: reads: A dataframe containing the read counts to be used in the further analysis
     """
-    if not if isinstance(filepath, pd.DataFrame):
+    if not isinstance(filepath, pd.DataFrame):
         # Load the input file with guide ids as row ids (file is to be tab delimited)
         reads = pd.read_csv(filepath, index_col=index_column, delimiter='\t')
     else:
@@ -382,10 +381,12 @@ def calculate_drugz_score_unpaired(per_gene_matrix, min_observations):
 
     return per_gene_results
 
-def drugZ_analysis(args):
+def drugZ_analysis(args,log=True):
     """ Call all functions and run drugZ analysis
     :param args: User given arguments
     """
+    log_.disabled = not log
+    
     if isinstance(args,dict):
         log_.info("Input arguments format: dict")
         from collections import namedtuple
