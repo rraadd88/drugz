@@ -3,8 +3,9 @@ DrugZ software from the Hart Lab
   
 DrugZ detects synergistic and suppressor drug-gene interactions in CRISPR screens.  
 
+## Usage
 ```
-usage: drugz.py [-h] [-i sgRNA_count.txt] [-o drugz-output.txt]  
+drugz.py [-h] [-i sgRNA_count.txt] [-o drugz-output.txt]  
                 [-f drugz-foldchange.txt] -c control samples -x drug samples  
                 [-r remove genes] [-p pseudocount] [-I INDEX_COLUMN]  
                 [--minobs minObs] [--half_window_size half_window_size] [-q]  
@@ -23,6 +24,8 @@ usage: drugz.py [-h] [-i sgRNA_count.txt] [-o drugz-output.txt]
 -unpaired Unpaired approach: compares mean(treated samples) to mean(control samples) (default=False)
 ```
   
+## Input
+
 The input file should be a tab-delimited file with the following format:
 
 ```
@@ -39,7 +42,10 @@ A1CF_GACATGGTATTGCAGTAGAC	A1CF	396	183	38	106	193	120	198
 (etc)
 ```
 
-Critically, the "gene" column must be the first non-index column in the file, and the column headers are used on the command line. For example, to execute DrugZ analyzing just the A and B replicates of this file, the command line would be:
+Critically, the "gene" column must be the first non-index column in the file, and the column headers are used on the command line. 
+
+## Examples
+For example, to execute DrugZ analyzing just the A and B replicates of this file, the command line would be:
 
 ```
 drugz.py -i [input_file] -o drugz-output.txt -c T15_A_control,T15_B_control -x T15_A_olaparib,T15_B_olaparib
@@ -86,7 +92,7 @@ drugz_results = dz.drugZ_analysis(Args())
 
 For more option check drugZ_in_jupyter_notebook_tutorial.html
 
-Output:  
+## Output 
 
 1. sumZ: The guide Z-score of all gRNA across all replicates is summed
 1. numObs: (number of summed terms)
