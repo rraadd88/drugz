@@ -85,3 +85,15 @@ drugz_results = dz.drugZ_analysis(Args())
 ```
 
 For more option check drugZ_in_jupyter_notebook_tutorial.html
+
+Output:  
+
+1. sumZ: The guide Z-score of all gRNA across all replicates is summed
+1. numObs: (number of summed terms)
+1. normZ: sumZ normalized by dividing by the square root of the number of summed terms
+1. pval_synth: P-value of a synthetic lethal interaction
+1. rank_synth: rank of a synthetic lethal interaction
+1. fdr_synth: FDR corrected P-value of a synthetic lethal interaction
+1. pval_supp: P-value of a suppressor interaction
+1. rank_supp: rank of a suppressor interaction
+1. fdr_supp: FDR corrected P-value of a suppressor interaction
